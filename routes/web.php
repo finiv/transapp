@@ -20,5 +20,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
-
+Route::resource('transactions', 'TransactionController');
 Route::get('/home', 'HomeController@index')->name('home');
