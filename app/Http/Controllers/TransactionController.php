@@ -15,15 +15,16 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = DB::table('transactions')
-        ->select('users.name', 'transactions.amount', 'transactions.type')
+        ->select('users.id', 'users.name', 'transactions.amount', 'transactions.type')
         ->join('users', 'transactions.user_id', '=', 'users.id')
-        ->paginate(10);
+        ->orderBy('transactions.created_at', 'desc')
+        ->paginate(5);
         
         foreach($transactions as $key => $item){
             $transactions[$key]->type = TransactionTypeEnum::getKey($item->type);
         }
 
-        return view('users', ['data' => $transactions]);
+        return view('transactions.index', compact('transactions'));
     }
 
     /**
@@ -52,6 +53,20 @@ class TransactionController extends Controller
 
         $transaction->save();
 
-        return redirect('api/transactions')->with('success', 'Transaction saved!');
+        return redirect('transactions')->with('success', 'Transaction saved!');
+    }
+
+    public function edit($id)
+    {
+        $transaction = Transaction::find($id);
+        // todo pass id to view
+        return view('transactions.edit', ['transaction' => $transaction]);
+    }
+
+    public function update(Request $request, Transaction $transaction)
+    {
+        $transaction = Transaction::find($transaction);
+        $transaction->save(); // todo complete update
+        return redirect('/transactions')->with('success', 'Transaction updated!');
     }
 }

@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
 
         $adminModel = \App\User::create($admin);
 
-        factory(App\User::class, 10)->create();
+        factory(App\User::class, 30)->create();
     }
 
 }
