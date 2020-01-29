@@ -12,10 +12,24 @@ use App\Http\Requests\{StoreTransactionRequest, UpdateTransactionRequest};
 
 class TransactionController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    function __construct()
+    {
+         $this->middleware('permission:transaction-list|transaction-create|transaction-edit|transaction-delete', ['only' => ['index','show']]);
+         $this->middleware('permission:transaction-create', ['only' => ['create','store']]);
+         $this->middleware('permission:transaction-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:transaction-delete', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         $transactions = Transaction::all();
-
+        //todo add permissions for user
         foreach($transactions as $key => $item){
             $transactions[$key]->type = TransactionTypeEnum::getKey($item->type);        
         }
