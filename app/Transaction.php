@@ -12,8 +12,13 @@ class Transaction extends Model
         'type'
     ];
 
-    public function users()
+    public function user()
     {
-        return $this->benlongsTo(User::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function notes()
+    {
+        return $this->morphToMany(Note::class);
     }
 }

@@ -19,7 +19,8 @@
                         </ul>
                     </div><br/>
                 @endif
-                <form method="post" action="{{ route('transactions.update') }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('transactions.update', ['transaction' => $transaction]) }}" enctype="multipart/form-data">
+                    @method('PUT')
                     @csrf
                     <div class="form-group">
                         <label for="type">Type:</label>
@@ -30,9 +31,9 @@
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount:</label>
-                        <input type="text" class="form-control" name="amount" />
+                        <input type="text" class="form-control" name="amount" value="{{$transaction->amount}}"/>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Transaction</button>
+                    <button type="submit" class="btn btn-primary">Update Transaction</button>
                 </form>
             </div>
         </div>

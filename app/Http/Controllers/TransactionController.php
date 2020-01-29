@@ -5,23 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Transaction;
-use Illuminate\Support\Facades\DB;
+use DB;
 use App\Enum\TransactionTypeEnum;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreTransactionRequest;
+use App\Http\Requests\{StoreTransactionRequest, UpdateTransactionRequest};
 
 class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = DB::table('transactions')
-        ->select('users.id', 'users.name', 'transactions.amount', 'transactions.type')
-        ->join('users', 'transactions.user_id', '=', 'users.id')
-        ->orderBy('transactions.created_at', 'desc')
-        ->paginate(5);
-        
+        $transactions = Transaction::all();
+
         foreach($transactions as $key => $item){
-            $transactions[$key]->type = TransactionTypeEnum::getKey($item->type);
+            $transactions[$key]->type = TransactionTypeEnum::getKey($item->type);        
         }
 
         return view('transactions.index', compact('transactions'));
@@ -46,7 +42,7 @@ class TransactionController extends Controller
         $amount = $request->get('amount');
         
         $transaction = new Transaction([
-            'user_id' => 1,
+            'user_id' => auth()->user()->id,
             'type' => $type,
             'amount' => $amount
         ]);
@@ -59,14 +55,28 @@ class TransactionController extends Controller
     public function edit($id)
     {
         $transaction = Transaction::find($id);
-        // todo pass id to view
+        
         return view('transactions.edit', ['transaction' => $transaction]);
     }
 
-    public function update(Request $request, Transaction $transaction)
+    public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
-        $transaction = Transaction::find($transaction);
-        $transaction->save(); // todo complete update
+        $transactionItem = Transaction::find($transaction)->first();
+        
+        $transactionItem->type = $request->get('type');
+        $transactionItem->amount = $request->get('amount');
+        
+        $transactionItem->save();
+        
         return redirect('/transactions')->with('success', 'Transaction updated!');
+    }
+
+    public function destroy(Transaction $transaction)
+    {
+        $transactionItem = Transaction::find($transaction)->first();
+
+        $transactionItem->delete();
+
+        return redirect('/transactions')->with('success', 'Transaction was successfully deleted!');
     }
 }

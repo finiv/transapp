@@ -17,6 +17,7 @@
         </div>
         <div>
             <a style="margin: 19px;" href="{{ route('transactions.create')}}" class="btn btn-primary">New transaction</a>
+            <a style="margin: 19px;" href="{{ url('/register') }}" class="btn btn-primary">New user</a>
         </div>
         <div class="col-sm-12">
                 <table class="table table-striped">
@@ -32,12 +33,12 @@
                 <tbody>
                 @foreach ($transactions as $value)
                     <tr>
-                        <th>{{ $value->name }}</th>
+                        <th>{{ $value->user->name }}</th>
                         <th>{{ $value->amount }}</th>
                         <th>{{ $value->type }}</th>
                         <td style="display:flex;">
-                        <a href="" class="btn btn-primary">Edit</a>
-                        <form action="" method="post">
+                        <a href="{{ route('transactions.edit',['transaction' => $value->id]) }}" class="btn btn-primary">Edit</a>
+                        <form action="{{ route('transactions.destroy', ['transaction' => $value->id]) }}" method="post">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger" type="submit">Delete</button>
@@ -45,11 +46,8 @@
                         </td>
                     </tr>
                 @endforeach
-               
-        
                 </tbody>
             </table>
-            {{ $transactions->links() }}
         </div>
     </div>
 @endsection

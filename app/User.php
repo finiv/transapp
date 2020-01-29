@@ -41,4 +41,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function notes()
+    {
+        return $this->morphToMany(Note::class);
+    }
 }
