@@ -27,6 +27,7 @@
                     <td>Name</td>
                     <td>Transaction amount</td>
                     <td>Transaction type</td>
+                    <td>Note</td>
                     <td colspan=2>Actions</td>
                 </tr>
                 </thead>
@@ -36,9 +37,11 @@
                         <th>{{ $value->user->name }}</th>
                         <th>{{ $value->amount }}</th>
                         <th>{{ $value->type }}</th>
+                        <th>{{ $value->note }}</th>
                         <td style="display:flex;">
                         <a href="{{ route('transactions.edit',['transaction' => $value->id]) }}" class="btn btn-primary">Edit</a>
                         <form action="{{ route('transactions.destroy', ['transaction' => $value->id]) }}" method="post">
+                        <a class="btn btn-primary" href="{{ route('transactions.edit',['transaction' => $value->id]) }}">Add note</a>
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger" type="submit">Delete</button>

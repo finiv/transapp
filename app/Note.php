@@ -8,8 +8,7 @@ class Note extends Model
 {
     protected $fillable = [
         'entity_type',
-        'title',
-        'description'
+        'entity_id'
     ];
 
     public function user()

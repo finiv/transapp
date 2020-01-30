@@ -9,7 +9,9 @@ class Transaction extends Model
     protected $fillable = [
         'user_id',
         'amount',
-        'type'
+        'type',
+        'title',
+        'note'
     ];
 
     public function user()
@@ -20,5 +22,15 @@ class Transaction extends Model
     public function notes()
     {
         return $this->morphToMany(Note::class);
+    }
+
+    public static function getTotalTransactionsValue ($id)
+    {
+        return Transaction::where('type', '=', '1')->where('user_id', $id)->sum('amount') - Transaction::where('type', '=', '0')->where('user_id', $id)->sum('amount');
+    }
+
+    public static function countTransactions ($id)
+    {
+        return Transaction::where('user_id', $id)->count('amount');
     }
 }

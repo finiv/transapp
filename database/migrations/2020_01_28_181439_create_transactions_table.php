@@ -17,6 +17,8 @@ class CreateTransactionsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id'); // foreign не написав спеціально
             $table->integer('amount');
+            $table->text('note')->nullable()->default(null);
+            $table->string('title')->nullable()->default(null);
             $table->tinyInteger('type')->default(App\Enum\TransactionTypeEnum::DEBIT);
             $table->timestamps();
         });

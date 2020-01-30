@@ -13,10 +13,7 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $role = Role::create(['name' => 'User']);
-
-        $permissions = Permission::pluck('id','id')->all();
-  
-        $role->syncPermissions($permissions);
+        $UserRole = Role::create(['name' => 'User']);
+        $UserRole->givePermissionTo('transaction-list');
     }
 }

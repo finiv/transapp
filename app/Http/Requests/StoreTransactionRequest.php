@@ -24,12 +24,13 @@ class StoreTransactionRequest extends FormRequest
      */
     public function rules()
     {
-        // $type = $this->get('type');
         $types = implode(',', TransactionTypeEnum::values()->toArray());
         
         return [
             'amount' => 'required|integer',
             'type' => 'required|in:' . $types,
+            'note' => 'nullable|string|min:1|max:255',
+            'title' => 'nullable|string|min:1'
         ];
     }
 }

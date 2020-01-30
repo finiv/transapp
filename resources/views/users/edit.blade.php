@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Transactions')
+@section('title', 'User')
 
 @section('content_header')
-    <h1>Add new Transaction</h1>
+    <h1>Add new User</h1>
 @stop
 
 @section('content')
@@ -19,19 +19,9 @@
                         </ul>
                     </div><br/>
                 @endif
-                <form method="post" action="{{ route('transactions.store') }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('users.update', ['user' => $user]) }}" enctype="multipart/form-data">
                     @csrf
-                    <div class="form-group">
-                        <label for="type">Type:</label>
-                    <select class="form-control" name="type">
-                        <option value="1">Debit</option>
-                        <option value="0">Credit</option>
-                    </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="amount">Amount:</label>
-                        <input type="text" class="form-control" name="amount"/>
-                    </div>
+                    <input type="hidden" name="_method" value="put">
                     <div class="form-group">
                         <label for="title">Title</label>
                         <input type="text" name="title">
@@ -40,7 +30,7 @@
                         <label for="note">Note:</label>
                         <textarea name="note" id="" cols="30" class="form-control" rows="10"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Transaction</button>
+                    <button type="submit" class="btn btn-primary">Add User</button>
                 </form>
             </div>
         </div>

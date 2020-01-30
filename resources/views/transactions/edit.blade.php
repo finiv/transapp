@@ -33,6 +33,14 @@
                         <label for="amount">Amount:</label>
                         <input type="text" class="form-control" name="amount" value="{{$transaction->amount}}"/>
                     </div>
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="note">Note:</label>
+                        <textarea name="note" id="" cols="30" class="form-control" rows="10"></textarea>
+                    </div>
                     <button type="submit" class="btn btn-primary">Update Transaction</button>
                 </form>
             </div>

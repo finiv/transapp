@@ -29,6 +29,8 @@ class UpdateTransactionRequest extends FormRequest
         return [
             'amount' => 'required|integer',
             'type' => 'required|in:' . $types,
+            'note' => 'nullable|string|min:1|max:255',
+            'title' => 'nullable|string|min:1'
         ];
     }
 }

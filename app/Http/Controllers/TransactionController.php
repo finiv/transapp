@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
-use App\Transaction;
+use App\{User, Note, Transaction};
 use DB;
 use App\Enum\TransactionTypeEnum;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +28,7 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = Transaction::all();
-        //todo add permissions for user
+
         foreach($transactions as $key => $item){
             $transactions[$key]->type = TransactionTypeEnum::getKey($item->type);        
         }
@@ -51,14 +50,16 @@ class TransactionController extends Controller
 
     public function store(StoreTransactionRequest $request)
     {
-        $type = $request->get('type');
-        
+        $type = $request->get('type');      
         $amount = $request->get('amount');
+        $title = isset($request->title) ? $request->get('title') : null;
+        $note = isset($request->note) ? $request->get('note') : null;
         
-        $transaction = new Transaction([
+        $transaction = Transaction::create([
             'user_id' => auth()->user()->id,
             'type' => $type,
-            'amount' => $amount
+            'amount' => $amount,
+            'note' => $note
         ]);
 
         $transaction->save();
@@ -79,7 +80,8 @@ class TransactionController extends Controller
         
         $transactionItem->type = $request->get('type');
         $transactionItem->amount = $request->get('amount');
-        
+        $transactionItem->note = isset($request->note) ? $request->get('note') : null;
+
         $transactionItem->save();
         
         return redirect('/transactions')->with('success', 'Transaction updated!');

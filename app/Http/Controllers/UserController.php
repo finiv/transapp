@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Transaction;
+use Spatie\Permission\Models\Role;
+use DB;
+use Hash;
 
 class UserController extends Controller
 {
@@ -11,10 +16,19 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, User $user)
     {
         $data = User::orderBy('id','DESC')->paginate(5);
-        return view('users.index',compact('data'))
+
+        $result = [];
+        
+        foreach($data as $key => $value){
+            $result[$key]['data'] = Transaction::getTotalTransactionsValue($value->id);
+            $result[$key]['user'] = $value;
+            $result[$key]['count'] = Transaction::where('user_id', $value->id)->count('amount');
+        }
+
+        return view('users.index',compact('result', 'data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
     
@@ -40,16 +54,20 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
-            'roles' => 'required'
+            'password' => 'required|same:password_confirmation',
+            'title' => 'nullable|string',
+            'description' => 'nullable|string'
         ]);
-    
+        
+        $request->title = isset($request->title) ? $request->get('title') : null;
+        $request->note = isset($request->note) ? $request->get('note') : null;
+
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
     
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
-    
+        
         return redirect()->route('users.index')
                         ->with('success','User created successfully');
     }
@@ -91,25 +109,14 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-            'password' => 'same:confirm-password',
-            'roles' => 'required'
+            'title' => 'nullable|string',
+            'description' => 'nullable|string'
         ]);
-    
-        $input = $request->all();
-        if(!empty($input['password'])){ 
-            $input['password'] = Hash::make($input['password']);
-        }else{
-            $input = array_except($input,array('password'));    
-        }
-    
-        $user = User::find($id);
-        $user->update($input);
-        DB::table('model_has_roles')->where('model_id',$id)->delete();
-    
-        $user->assignRole($request->input('roles'));
-    
+        $user = User::find($id)->first();
+        $user->title = $request->get('title');
+        $user->note = $request->get('note');
+        $user->update();
+        
         return redirect()->route('users.index')
                         ->with('success','User updated successfully');
     }
