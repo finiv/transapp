@@ -19,7 +19,7 @@
                         </ul>
                     </div><br/>
                 @endif
-                <form method="post" action="{{ route('transactions.store') }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('transactions.store') }}">
                     @csrf
                     <div class="form-group">
                         <label for="type">Type:</label>

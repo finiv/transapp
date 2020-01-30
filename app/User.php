@@ -48,4 +48,8 @@ class User extends Authenticatable
         return $this->morphToMany(Note::class);
     }
 
+    public function scopeOrderUsers()
+    {
+        return User::orderBy('id','DESC')->paginate(5);
+    }
 }

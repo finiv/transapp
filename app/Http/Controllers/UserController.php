@@ -18,7 +18,7 @@ class UserController extends Controller
      */
     public function index(Request $request, User $user)
     {
-        $data = User::orderBy('id','DESC')->paginate(5);
+        $data = User::orderUsers();
 
         $result = [];
         
@@ -43,6 +43,15 @@ class UserController extends Controller
         return view('users.create',compact('roles'));
     }
     
+    public function search(Request $request)
+    {
+        $search = $request->get('search');
+
+        $users = DB::table('users')->where('name', 'like', '%' . $search . '%')->paginate(5);
+
+        return view('users.index', ['users' => $users]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -81,6 +90,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
+        
         return view('users.show',compact('user'));
     }
     

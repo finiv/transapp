@@ -76,22 +76,18 @@ class TransactionController extends Controller
 
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
-        $transactionItem = Transaction::find($transaction)->first();
-        
-        $transactionItem->type = $request->get('type');
-        $transactionItem->amount = $request->get('amount');
-        $transactionItem->note = isset($request->note) ? $request->get('note') : null;
+        $transaction->type = $request->get('type');
+        $transaction->amount = $request->get('amount');
+        $transaction->note = isset($request->note) ? $request->get('note') : null;
 
-        $transactionItem->save();
+        $transaction->save();
         
         return redirect('/transactions')->with('success', 'Transaction updated!');
     }
 
     public function destroy(Transaction $transaction)
     {
-        $transactionItem = Transaction::find($transaction)->first();
-
-        $transactionItem->delete();
+        $transaction->delete();
 
         return redirect('/transactions')->with('success', 'Transaction was successfully deleted!');
     }
