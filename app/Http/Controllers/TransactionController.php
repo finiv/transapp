@@ -27,7 +27,7 @@ class TransactionController extends Controller
 
     public function index()
     {
-        $transactions = Transaction::all();
+        $transactions = Transaction::orderTransactions();
 
         foreach($transactions as $key => $item){
             $transactions[$key]->type = TransactionTypeEnum::getKey($item->type);        

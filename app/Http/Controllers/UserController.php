@@ -8,6 +8,7 @@ use App\Transaction;
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
+use App\Http\Requests\{StoreUserRequest, UpdateUserRequest};
 
 class UserController extends Controller
 {
@@ -58,16 +59,8 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:password_confirmation',
-            'title' => 'nullable|string',
-            'description' => 'nullable|string'
-        ]);
-        
         $request->title = isset($request->title) ? $request->get('title') : null;
         $request->note = isset($request->note) ? $request->get('note') : null;
 
@@ -118,10 +111,6 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'title' => 'nullable|string',
-            'description' => 'nullable|string'
-        ]);
         $user = User::find($id)->first();
         $user->title = $request->get('title');
         $user->note = $request->get('note');

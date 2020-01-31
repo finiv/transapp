@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Enum\TransactionTypeEnum;
 
-class UpdateTransactionRequest extends FormRequest
+class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +23,12 @@ class UpdateTransactionRequest extends FormRequest
      */
     public function rules()
     {
-        $types = implode(',', TransactionTypeEnum::values()->toArray());
-        
         return [
-            'amount' => 'required|integer|min:1|max:9999999',
-            'type' => 'required|in:' . $types,
-            'note' => 'nullable|string|min:1|max:255',
-            'title' => 'nullable|string|min:1'
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|same:password_confirmation',
+            'title' => 'nullable|string|min:1|max:255',
+            'description' => 'nullable|string|min:1'
         ];
     }
 }

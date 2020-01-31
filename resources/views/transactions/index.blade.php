@@ -17,7 +17,7 @@
         </div>
         <div>
             <a style="margin: 19px;" href="{{ route('transactions.create')}}" class="btn btn-primary">New transaction</a>
-            <a style="margin: 19px;" href="{{ url('/register') }}" class="btn btn-primary">New user</a>
+            <a style="margin: 19px;" href="{{ url('/users') }}" class="btn btn-primary">Go to users table</a>
         </div>
         <div class="col-sm-12">
                 <table class="table table-striped">
@@ -41,7 +41,6 @@
                         <td style="display:flex;">
                         <a href="{{ route('transactions.edit',['transaction' => $value->id]) }}" class="btn btn-primary">Edit</a>
                         <form action="{{ route('transactions.destroy', ['transaction' => $value->id]) }}" method="post">
-                        <a class="btn btn-primary" href="{{ route('transactions.edit',['transaction' => $value->id]) }}">Add note</a>
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger" type="submit">Delete</button>
@@ -52,5 +51,6 @@
                 </tbody>
             </table>
         </div>
+        {{ $transactions->links() }}
     </div>
 @endsection

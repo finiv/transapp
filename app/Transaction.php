@@ -33,4 +33,9 @@ class Transaction extends Model
     {
         return Transaction::where('user_id', $id)->count('amount');
     }
+
+    public function scopeOrderTransactions()
+    {
+        return Transaction::orderBy('id','DESC')->paginate(5);
+    }
 }

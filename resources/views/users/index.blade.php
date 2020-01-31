@@ -17,6 +17,7 @@
         </div>
         <div>
             <a style="margin: 19px;" href="{{ route('users.create') }}" class="btn btn-primary">New user</a>
+            <a style="margin: 19px;" href="{{ route('transactions.index') }}" class="btn btn-primary">Go to tranactions</a>
         </div>
         <div class="col-sm-12">
                 <table class="table table-striped">

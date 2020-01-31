@@ -34,11 +34,11 @@
                     </div>
                     <div class="form-group">
                         <label for="title">Title</label>
-                        <input type="text" name="title">
+                        <input type="text" class="form-control" name="title" placeholder="Not mandatory">
                     </div>
                     <div class="form-group">
                         <label for="note">Note:</label>
-                        <textarea name="note" id="" cols="30" class="form-control" rows="10"></textarea>
+                        <textarea name="note" id="" cols="30" class="form-control" rows="10" placeholder="Not mandatory"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Add Transaction</button>
                 </form>

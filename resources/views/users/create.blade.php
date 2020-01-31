@@ -35,7 +35,7 @@
                         <input type="password" class="form-control" name="password"/>
                     </div>
                     <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right ">{{ __('Confirm Password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
@@ -43,11 +43,11 @@
                         </div>
                     <div class="form-group">
                         <label for="title">Title</label>
-                        <input type="text" name="title">
+                        <input type="text" class="form-control" name="title" placeholder="Not mandatory">
                     </div>
                     <div class="form-group">
                         <label for="note">Note:</label>
-                        <textarea name="note" id="" cols="30" class="form-control" rows="10"></textarea>
+                        <textarea name="note" id="" cols="30" class="form-control" rows="10" placeholder="Not mandatory"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Add User</button>
                 </form>
